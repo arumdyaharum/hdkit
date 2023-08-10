@@ -1,0 +1,26 @@
+{
+  "name": "hdkit",
+  "version": "1.0.0",
+  "description": "Human design kit for generate human design data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "human design",
+    "human design kit",
+    "hdkit",
+    "hds",
+    "human design system",
+    "human design gate",
+    "human design channel",
+    "human design center",
+    "human design variable"
+  ],
+  "author": "Dyah Achwatiningrum",
+  "license": "ISC",
+  "dependencies": {
+    "astronomy-engine": "^2.1.17"
+  },
+  "type": "module"
+}
