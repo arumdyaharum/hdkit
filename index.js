@@ -13,7 +13,9 @@ function hdkit (date = new Date(), option = {
   }
   const personality = Restructuring.hdCreation(date);
   const design = Restructuring.hdCreation(date, true);
-  let data = {}
+  let data = {
+    date,
+  }
   if (option.raw) {
     data.personality = personality;
     data.design = design;
@@ -24,7 +26,7 @@ function hdkit (date = new Date(), option = {
   if (Object.values(option).some(e => e)) {
     data = {...data, ...Restructuring.chartInfo(personality, design, option)};
   }
-  data.notes = "North Node and South Node is still an experimental code."
+  data.notes = "North Node and South Node is still experimenting."
   return data;
 };
 

@@ -1,5 +1,4 @@
 import * as Astronomy from "astronomy-engine";
-import julian from "julian";
 
 const PLANETS = {
   earth: Astronomy.Body.Earth,
@@ -31,24 +30,33 @@ function birthToDesignDate (birthDate) {
   return design.date
 }
 
-// TODO: Find a current Lunar Nodes position
+// TODO: Find the accuracy of Lunar Nodes position
 function lunarNode (date) {
   const node = Astronomy.SearchMoonNode(date);
+  const eclip = Astronomy.EclipticGeoMoon(node.time);
+  const eclipLon = node.kind < 0 ? (eclip.lon + 180) % 360 : eclip.lon
+  if (node.time.date === date) return eclipLon;
   let tempDate = new Date(date);
   let flag = true;
   let nodeBefore = node;
   while(flag) {
-    tempDate.setDate(tempDate.getDate() - 5);
+    tempDate.setDate(tempDate.getDate() - 10);
     nodeBefore = Astronomy.SearchMoonNode(tempDate);
     if (nodeBefore.time.date.getDate() !== node.time.date.getDate()) flag = false;
   }
-  const eclip = Astronomy.EclipticGeoMoon(node.time);
   const eclipBefore = Astronomy.EclipticGeoMoon(nodeBefore.time);
-  const q = Math.abs(date - nodeBefore.time.date);
+  const eclipBeforeLon = nodeBefore.kind < 0 ? (eclipBefore.lon + 180) % 360 : eclipBefore.lon
   const d = Math.abs(node.time.date - nodeBefore.time.date);
-  const fraction = (q/d);
-  const currentElon = (eclip.lon - eclipBefore.lon) * (fraction / 100);
-  return nodeBefore.kind > node.kind ? eclip.lon + 180 - currentElon : eclip.lon - currentElon;
+  const a = Math.abs(node.time.date - date);
+  const fraction = (a/d);
+  let angle = eclipBeforeLon - eclipLon;
+  angle = angle * fraction;
+  const currentEclip = eclipLon + angle;
+  // version 2 : with the constant of lunar nodes regression's rate 
+  // const time = a / (365.25 * 24 * 60 * 60 * 1000);
+  // const angle = 19.32 * time;
+  // const currentEclip = eclipLon + angle;
+  return currentEclip;
 }
 
 export default {
