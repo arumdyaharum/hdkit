@@ -39,5 +39,5 @@ const option = {
   basic: false,
 }; // default value
 
-hdkit(new Date(UTCDate, option));
+hdkit(new Date(UTCDate), option);
 ```
